@@ -30,7 +30,7 @@ router.get('/create', (req, res, next) => {
   var author_cmbbox = template.author_cmbbox(req.authors);
   var description =
     `
-      <h2>게시물 수정</h2>
+      <h2>게시물 작성</h2>
       <form action="/topic/create" method="post">
         <p>
           <input type="text" name="title" placeholder="title">
@@ -45,7 +45,7 @@ router.get('/create', (req, res, next) => {
       </form>
     `;
   var addon = template.create_link('topic')
-  var html = template.HTML(title, list, description, addon);
+  var html = template.HTML(title, list + addon + description);
   res.send(html);
 })
 
@@ -63,13 +63,14 @@ router.post('/update', (req, res, next) => {
   var data = qs.parse(req.body);
   var id = data.id;
   db.query('select * from topic left join author on topic.author_id = author.id where topic.id = ?', [id], (error, post, fields) => {
-    var list = template.list('topic', req.topics);
     var title = post[0].title;
+    var list = template.list('topic', req.topics);
     var article = post[0].description;
     var author_id = post[0].author_id;
     var author_cmbbox = template.author_cmbbox(req.authors, author_id);
     var description =
     `
+      <h2>게시물 수정</h2>
       <form action="/topic/updating" method="post">
         <input type="hidden" name="id" value="${id}">
         <p>
@@ -85,7 +86,7 @@ router.post('/update', (req, res, next) => {
       </form>
     `;
     var addon = template.create_link('topic');
-    var html = template.HTML('수정', list, description, addon);
+    var html = template.HTML('수정', list  + addon + description);
     res.send(html);
   })
 })
@@ -121,12 +122,12 @@ router.get('/:topicId', (req, res, next) => {
     var description =
       `
       <h2>${title}</h2>
-      <h4>by <a href="/author/${author_id}/topics">${name}</a></h4>
+      <h4>by <a class="blue" href="/author/${author_id}/topics">${name}</a></h4>
       <h5>${created}</h5>
       <p>${article}</p>
       `;
     var addon = template.create_link('topic') + template.update_link('topic', id) + template.delete_link('topic', id);
-    var html = template.HTML(title, list, description, addon);
+    var html = template.HTML(title, list + addon + description );
     res.send(html);
   })
 })
@@ -140,7 +141,7 @@ router.get('/', (req, res, next) => {
       <p></p>
     `;
   var addon = template.create_link('topic')
-  var html = template.HTML(title, list, description, addon);
+  var html = template.HTML(title, list + addon + description);
   res.send(html);
 })
 

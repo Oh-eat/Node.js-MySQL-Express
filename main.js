@@ -8,6 +8,7 @@ const topicRouter = require('./routes/topic.js');
 const authorRouter = require('./routes/author.js');
 const port = 3000
 
+app.use(express.static('public'));
 app.use('*', (req, res, next) => {
   var body = '';
   req.on('data', (data) => {

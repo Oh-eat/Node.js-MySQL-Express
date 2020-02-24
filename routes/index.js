@@ -9,7 +9,7 @@ router.get('*', (req, res, next) => {
       <h2>환영합니다</h2>
       <p>Node.js & MySQL & Express</p>
     `;
-  var html = template.HTML(title, '', description);
+  var html = template.HTML(title, description);
   res.send(html);
 })
 
